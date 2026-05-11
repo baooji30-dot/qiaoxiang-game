@@ -9,7 +9,7 @@ import io from "socket.io-client";
 
 const socket = io(
 
-  "https://你的后端网址.up.railway.app",
+  "https://qiaoxiang-game.onrender.com",
 
   {
 
