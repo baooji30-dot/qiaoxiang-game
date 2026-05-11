@@ -2607,3 +2607,17 @@ http.listen(3000, () => {
   );
 
 });
+import path from "path";
+import express from "express";
+
+const app = express();
+
+app.use(express.static(
+  path.join(process.cwd(), "client/dist")
+));
+
+app.get("*", (req, res) => {
+  res.sendFile(
+    path.join(process.cwd(), "client/dist/index.html")
+  );
+});
