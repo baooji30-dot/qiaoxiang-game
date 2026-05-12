@@ -111,13 +111,13 @@ io.on("connection", (socket) => {
 
   players.push(player);
 
-  socket.emit("init", {
-    players,
-    player,
-    boss,
-    battle: null,
-    shopItems
-  });
+socket.emit("init", {
+  players,
+  player: newPlayer,
+  boss,
+  battle: null,
+  shopItems
+});
 
   io.emit("update", players);
 
