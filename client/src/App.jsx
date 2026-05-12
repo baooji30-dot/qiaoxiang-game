@@ -91,6 +91,20 @@ export default function App() {
 
     socket.on("init", (data) => {
 
+  console.log("INIT DATA", data);
+
+  setPlayers(data.players);
+
+  setPlayer(data.player);
+
+  setBoss(data.boss);
+
+  setBattle(data.battle);
+
+  setShopItems(data.shopItems);
+
+});
+
       setPlayers(data.players);
 
       setPlayer(data.player);
