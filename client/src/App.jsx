@@ -1,8 +1,5 @@
-import React from 'react'
-import { useEffect, useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
-
 
 // ======================
 // 后端地址
@@ -11,46 +8,41 @@ import io from "socket.io-client";
 const socket = io(
   "https://qiaoxiang-game.onrender.com",
   {
-
     transports: [
       "websocket",
       "polling"
     ]
-
   }
-
 );
-
 
 // ======================
 // 地图格子
 // ======================
 
 const SHOP_CELLS = [
-  10,30,50,70,90
+  10, 30, 50, 70, 90
 ];
 
 const LETTER_CELLS = [
-  20,40,60,80,100
+  20, 40, 60, 80, 100
 ];
 
 const MONSTER_CELLS = [
-  12,18,26,34,
-  44,52,66,74
+  12, 18, 26, 34,
+  44, 52, 66, 74
 ];
 
 const ELITE_CELLS = [
-  45,75
+  45, 75
 ];
 
 const GOLD_CELLS = [
-  8,16,28,48,68
+  8, 16, 28, 48, 68
 ];
 
 const TRAP_CELLS = [
-  22,38,58,82
+  22, 38, 58, 82
 ];
-
 
 // ======================
 // 主程序
@@ -82,89 +74,88 @@ export default function App() {
   const [gameOver, setGameOver] =
     useState("");
 
-
   // ======================
   // socket
   // ======================
 
-useEffect(() => {
+  useEffect(() => {
 
-  socket.on("init", (data) => {
+    socket.on("init", (data) => {
 
-    console.log("INIT DATA", data);
+      console.log("INIT DATA", data);
 
-    setPlayers(data.players);
+      setPlayers(data.players);
 
-    setPlayer(data.player);
+      setPlayer(data.player);
 
-    setBoss(data.boss);
+      setBoss(data.boss);
 
-    setBattle(data.battle);
+      setBattle(data.battle);
 
-    setShopItems(data.shopItems);
+      setShopItems(data.shopItems);
 
-  });
+    });
 
-  socket.on("update", (players) => {
+    socket.on("update", (players) => {
 
-    setPlayers(players);
+      setPlayers(players);
 
-    const me =
-      players.find(
-        p => p.id === socket.id
-      );
+      const me =
+        players.find(
+          p => p.id === socket.id
+        );
 
-    if (me) {
+      if (me) {
 
-      setPlayer(me);
+        setPlayer(me);
 
-    }
+      }
 
-  });
+    });
 
-  socket.on("bossUpdate", (boss) => {
+    socket.on("bossUpdate", (boss) => {
 
-    setBoss(boss);
+      setBoss(boss);
 
-  });
+    });
 
-  socket.on(
-    "battleUpdate",
-    (battle) => {
+    socket.on(
+      "battleUpdate",
+      (battle) => {
 
-      setBattle(battle);
+        setBattle(battle);
 
-    }
-  );
+      }
+    );
 
-  socket.on("log", (msg) => {
+    socket.on("log", (msg) => {
 
-    setLogs(prev => [
-      msg,
-      ...prev
-    ]);
+      setLogs(prev => [
+        msg,
+        ...prev
+      ]);
 
-  });
+    });
 
-  socket.on("turn", (id) => {
+    socket.on("turn", (id) => {
 
-    setCurrentTurn(id);
+      setCurrentTurn(id);
 
-  });
+    });
 
-  socket.on("gameOver", (msg) => {
+    socket.on("gameOver", (msg) => {
 
-    setGameOver(msg);
+      setGameOver(msg);
 
-  });
+    });
 
-  return () => {
+    return () => {
 
-    socket.off();
+      socket.off();
 
-  };
+    };
 
-}, []);
+  }, []);
 
   // ======================
   // 掷骰子
@@ -184,7 +175,6 @@ useEffect(() => {
 
   };
 
-
   // ======================
   // 用卡
   // ======================
@@ -198,7 +188,6 @@ useEffect(() => {
 
   };
 
-
   // ======================
   // 买东西
   // ======================
@@ -211,7 +200,6 @@ useEffect(() => {
     );
 
   };
-
 
   // ======================
   // 状态图标
@@ -256,11 +244,9 @@ useEffect(() => {
 
   };
 
-
   const isMyTurn =
     player &&
     currentTurn === player.id;
-
 
   // ======================
   // UI
@@ -271,11 +257,9 @@ useEffect(() => {
     <div
       style={{
         minHeight: "100vh",
-        background:
-          "#efe6d6",
+        background: "#efe6d6",
         padding: 20,
-        fontFamily:
-          "sans-serif"
+        fontFamily: "sans-serif"
       }}
     >
 
@@ -303,17 +287,14 @@ useEffect(() => {
 
       </div>
 
-
       {/* 游戏结束 */}
 
       {gameOver && (
 
         <div
           style={{
-            background:
-              "#ffebee",
-            border:
-              "4px solid red",
+            background: "#ffebee",
+            border: "4px solid red",
             padding: 20,
             borderRadius: 20,
             marginBottom: 20,
@@ -328,7 +309,6 @@ useEffect(() => {
         </div>
 
       )}
-
 
       {/* 玩家 + Boss */}
 
@@ -408,9 +388,6 @@ useEffect(() => {
                 {player.discard?.length}
               </p>
 
-
-              {/* 状态 */}
-
               <div
                 style={{
                   display: "flex",
@@ -423,9 +400,6 @@ useEffect(() => {
                 )}
 
               </div>
-
-
-              {/* 晕眩 */}
 
               {player.stunned && (
 
@@ -440,14 +414,10 @@ useEffect(() => {
 
               )}
 
-
-              {/* 当前回合 */}
-
               <div
                 style={{
                   marginTop: 15,
-                  fontWeight:
-                    "bold"
+                  fontWeight: "bold"
                 }}
               >
 
@@ -457,16 +427,12 @@ useEffect(() => {
 
               </div>
 
-
-              {/* 掷骰子 */}
-
               <button
                 disabled={!isMyTurn}
                 onClick={rollDice}
                 style={{
                   marginTop: 20,
-                  padding:
-                    "12px 24px",
+                  padding: "12px 24px",
                   fontSize: 18,
                   borderRadius: 12
                 }}
@@ -480,14 +446,12 @@ useEffect(() => {
 
         </div>
 
-
         {/* Boss */}
 
         <div
           style={{
             width: 420,
-            background:
-              "#212121",
+            background: "#212121",
             color: "white",
             borderRadius: 20,
             padding: 20
@@ -512,9 +476,6 @@ useEffect(() => {
                 {boss.immuneDebuff}
               </p>
 
-
-              {/* HP */}
-
               <div
                 style={{
                   marginTop: 10
@@ -532,11 +493,9 @@ useEffect(() => {
                   style={{
                     width: "100%",
                     height: 24,
-                    background:
-                      "#555",
+                    background: "#555",
                     borderRadius: 20,
-                    overflow:
-                      "hidden"
+                    overflow: "hidden"
                   }}
                 >
 
@@ -545,66 +504,11 @@ useEffect(() => {
                       width:
                         `${(boss.hp / boss.maxHp) * 100}%`,
                       height: "100%",
-                      background:
-                        "#ef5350"
+                      background: "#ef5350"
                     }}
                   />
 
                 </div>
-
-              </div>
-
-
-              {/* 护盾 */}
-
-              <div
-                style={{
-                  marginTop: 15
-                }}
-              >
-
-                <div>
-                  护盾：
-                  {boss.shield}
-                </div>
-
-                <div
-                  style={{
-                    width: "100%",
-                    height: 18,
-                    background:
-                      "#555",
-                    borderRadius: 20
-                  }}
-                >
-
-                  <div
-                    style={{
-                      width:
-                        `${boss.shield}%`,
-                      height: "100%",
-                      background:
-                        "#64b5f6"
-                    }}
-                  />
-
-                </div>
-
-              </div>
-
-
-              {/* 状态 */}
-
-              <div
-                style={{
-                  display: "flex",
-                  marginTop: 15
-                }}
-              >
-
-                {renderStatus(
-                  boss.status
-                )}
 
               </div>
 
@@ -612,52 +516,9 @@ useEffect(() => {
 
           )}
 
-
-          {/* 战斗 */}
-
-          {battle && (
-
-            <div
-              style={{
-                marginTop: 20,
-                background:
-                  "#5d4037",
-                padding: 20,
-                borderRadius: 20
-              }}
-            >
-
-              <h2>
-                ⚔ 战斗中
-              </h2>
-
-              <h3>
-                {battle.enemy.name}
-              </h3>
-
-              <p>
-                HP：
-                {battle.enemy.hp}
-              </p>
-
-              <p>
-                护盾：
-                {battle.enemy.shield}
-              </p>
-
-              <p>
-                攻击：
-                {battle.enemy.attack}
-              </p>
-
-            </div>
-
-          )}
-
         </div>
 
       </div>
-
 
       {/* 地图 */}
 
@@ -731,7 +592,6 @@ useEffect(() => {
 
             if (pos >= 95)
               bg = "#ef5350";
-
 
             return (
 
@@ -819,218 +679,8 @@ useEffect(() => {
 
       </div>
 
-
-      {/* 商店 */}
-
-      <div
-        style={{
-          background: "white",
-          borderRadius: 20,
-          padding: 20,
-          marginBottom: 20
-        }}
-      >
-
-        <h2>
-          商店
-        </h2>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            flexWrap: "wrap"
-          }}
-        >
-
-          {shopItems.map(
-            (item, index) => (
-
-            <div
-              key={index}
-              style={{
-                width: 180,
-                border:
-                  "2px solid #333",
-                borderRadius: 20,
-                padding: 16
-              }}
-            >
-
-              <h3>
-                {item.name}
-              </h3>
-
-              <p>
-                价格：
-                {item.cost}
-              </p>
-
-              <button
-                onClick={() =>
-                  buyItem(index)
-                }
-              >
-                购买
-              </button>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </div>
-
-
-      {/* 手牌 */}
-
-      <div
-        style={{
-          background: "white",
-          borderRadius: 20,
-          padding: 20,
-          marginBottom: 20
-        }}
-      >
-
-        <h2>
-          手牌区
-        </h2>
-
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            flexWrap: "wrap"
-          }}
-        >
-
-          {player?.hand?.map(
-            (card, index) => (
-
-            <div
-              key={index}
-              style={{
-                width: 180,
-                height: 240,
-                background:
-                  "#fafafa",
-                border:
-                  "2px solid #333",
-                borderRadius: 20,
-                padding: 16,
-                display: "flex",
-                flexDirection:
-                  "column",
-                justifyContent:
-                  "space-between"
-              }}
-            >
-
-              <div>
-
-                <h3>
-                  {card.name}
-                </h3>
-
-                <p>
-                  稀有度：
-                  {card.rarity}
-                </p>
-
-                <p>
-                  消耗：
-                  {card.cost}
-                </p>
-
-                {card.damage && (
-
-                  <p>
-                    伤害：
-                    {card.damage}
-                  </p>
-
-                )}
-
-                {card.heal && (
-
-                  <p>
-                    治疗：
-                    {card.heal}
-                  </p>
-
-                )}
-
-                {card.effect && (
-
-                  <p>
-                    效果：
-                    {card.effect}
-                  </p>
-
-                )}
-
-              </div>
-
-              <button
-                onClick={() =>
-                  useCard(index)
-                }
-              >
-                使用卡牌
-              </button>
-
-            </div>
-
-          ))}
-
-        </div>
-
-      </div>
-
-
-      {/* 日志 */}
-
-      <div
-        style={{
-          background: "white",
-          borderRadius: 20,
-          padding: 20
-        }}
-      >
-
-        <h2>
-          游戏日志
-        </h2>
-
-        <div
-          style={{
-            maxHeight: 260,
-            overflow: "auto"
-          }}
-        >
-
-          {logs.map((log, i) => (
-
-            <div
-              key={i}
-              style={{
-                padding: 6,
-                borderBottom:
-                  "1px solid #ddd"
-              }}
-            >
-              {log}
-            </div>
-
-          ))}
-
-        </div>
-
-      </div>
-
     </div>
 
   );
 
+}
