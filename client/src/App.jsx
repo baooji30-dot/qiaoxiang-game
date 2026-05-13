@@ -87,106 +87,84 @@ export default function App() {
   // socket
   // ======================
 
-  useEffect(() => {
+useEffect(() => {
 
-    socket.on("init", (data) => {
+  socket.on("init", (data) => {
 
-  console.log("INIT DATA", data);
+    console.log("INIT DATA", data);
 
-  setPlayers(data.players);
+    setPlayers(data.players);
 
-  setPlayer(data.player);
+    setPlayer(data.player);
 
-  setBoss(data.boss);
+    setBoss(data.boss);
 
-  setBattle(data.battle);
+    setBattle(data.battle);
 
-  setShopItems(data.shopItems);
+    setShopItems(data.shopItems);
 
-});
+  });
 
-      setPlayers(data.players);
+  socket.on("update", (players) => {
 
-      setPlayer(data.player);
+    setPlayers(players);
 
-      setBoss(data.boss);
-
-      setBattle(data.battle);
-
-      setShopItems(
-        data.shopItems
+    const me =
+      players.find(
+        p => p.id === socket.id
       );
 
-    });
+    if (me) {
 
+      setPlayer(me);
 
-    socket.on("update", (players) => {
+    }
 
-      setPlayers(players);
+  });
 
-      const me =
-        players.find(
-          p => p.id === socket.id
-        );
+  socket.on("bossUpdate", (boss) => {
 
-      if (me) {
+    setBoss(boss);
 
-        setPlayer(me);
+  });
 
-      }
+  socket.on(
+    "battleUpdate",
+    (battle) => {
 
-    });
+      setBattle(battle);
 
+    }
+  );
 
-    socket.on("bossUpdate", (boss) => {
+  socket.on("log", (msg) => {
 
-      setBoss(boss);
+    setLogs(prev => [
+      msg,
+      ...prev
+    ]);
 
-    });
+  });
 
+  socket.on("turn", (id) => {
 
-    socket.on(
-      "battleUpdate",
-      (battle) => {
+    setCurrentTurn(id);
 
-        setBattle(battle);
+  });
 
-      }
-    );
+  socket.on("gameOver", (msg) => {
 
+    setGameOver(msg);
 
-    socket.on("log", (msg) => {
+  });
 
-      setLogs(prev => [
-        msg,
-        ...prev
-      ]);
+  return () => {
 
-    });
+    socket.off();
 
+  };
 
-    socket.on("turn", (id) => {
-
-      setCurrentTurn(id);
-
-    });
-
-
-    socket.on("gameOver", (msg) => {
-
-      setGameOver(msg);
-
-    });
-
-
-    return () => {
-
-      socket.off();
-
-    };
-
-  } [];
-
+}, []);
 
   // ======================
   // 掷骰子
